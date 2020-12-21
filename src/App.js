@@ -20,6 +20,7 @@ firebase.initializeApp({
   measurementId: "G-NWXREE2YEL"
 })
 
+
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
@@ -27,10 +28,12 @@ const analytics = firebase.analytics();
 function App() {
   const [user] = useAuthState(auth);
 
+
   return (
     <div className="App">
       <header>
         <SignOut></SignOut>
+        <Image></Image>
       </header>
 
       <section>
@@ -39,6 +42,19 @@ function App() {
     </div>
   );
 }
+
+function Image(){
+  let photoURL;
+  alert(auth.currentUser)
+
+
+  return(
+      <>
+        <img src={photoURL} />
+      </>
+  )
+}
+
 function SignIn() {
 
   const signInWithGoogle = () => {
@@ -104,13 +120,11 @@ function Agenda(){
   </>)
 }
 function ChatMessage(props) {
-  const { text, photoURL } = props.todo;
-
-
+  const { text } = props.todo;
 
   return (<>
     <div className='todoElem'>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
+
       <p>{text}</p>
     </div>
   </>)
