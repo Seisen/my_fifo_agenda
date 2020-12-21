@@ -70,6 +70,8 @@ function SignOut() {
   )
 }
 
+
+
 function Agenda(){
   const dummy = useRef();
   const todoRef = firestore.collection('todo');
@@ -79,7 +81,7 @@ function Agenda(){
 
   const [formValue, setFormValue] = useState('');
   const [levelValue, setLevelValue] = useState('');
-  const cpt_lvl = "0";
+
 
 
 
@@ -90,6 +92,7 @@ function Agenda(){
 
     await todoRef.add({
       text: formValue,
+      level: levelValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL
@@ -104,11 +107,11 @@ function Agenda(){
     <form onSubmit={addObj}>
 
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
-
+      <input type='checkbox'  onChange={(e) => setLevelValue(e.target.value)} />
       <button type="submit" disabled={!formValue}>+</button>
 
     </form>
-      <button value={cpt_lvl} onClick={(e) => setFormValue(e.target.value)}>{levelValue}</button>
+
       <main>
 
         {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
