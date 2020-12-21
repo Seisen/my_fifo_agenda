@@ -6,6 +6,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
 
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -25,35 +26,29 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 
+
 function App() {
   const [user] = useAuthState(auth);
+
 
 
   return (
     <div className="App">
       <header>
         <SignOut></SignOut>
-        <Image></Image>
+
       </header>
 
       <section>
         {user ? <Agenda /> : <SignIn />}
+
+
       </section>
     </div>
   );
 }
 
-function Image(){
-  let photoURL;
-  alert(auth.currentUser)
 
-
-  return(
-      <>
-        <img src={photoURL} />
-      </>
-  )
-}
 
 function SignIn() {
 
@@ -83,11 +78,14 @@ function Agenda(){
   const [todo] = useCollectionData(query, { idField: 'id' });
 
   const [formValue, setFormValue] = useState('');
+  const [levelValue, setLevelValue] = useState('');
+  const cpt_lvl = "0";
+
 
 
   const addObj = async (e) => {
-    e.preventDefault();
 
+    e.preventDefault();
     const { uid,photoURL } = auth.currentUser;
 
     await todoRef.add({
@@ -102,14 +100,7 @@ function Agenda(){
   }
 
   return (<>
-    <main>
-
-      {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
-
-      <span ref={dummy}></span>
-
-    </main>
-
+        <span ref={dummy}></span>
     <form onSubmit={addObj}>
 
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
@@ -117,7 +108,16 @@ function Agenda(){
       <button type="submit" disabled={!formValue}>+</button>
 
     </form>
-  </>)
+      <button value={cpt_lvl} onClick={(e) => setFormValue(e.target.value)}>{levelValue}</button>
+      <main>
+
+        {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
+
+
+
+      </main>
+  </>
+  )
 }
 function ChatMessage(props) {
   const { text } = props.todo;
