@@ -125,10 +125,22 @@ function Agenda(){
 function ChatMessage(props) {
   const { text } = props.todo;
 
+
+
+  const removeObj = async (e) => {
+    e.preventDefault();
+    const docId = props.todo.id
+    const todoRef = firestore.collection('todo').doc(docId);
+
+    await todoRef.delete();
+  }
+
+
   return (<>
     <div className='todoElem'>
 
       <p>{text}</p>
+      <button onClick={removeObj}>-</button>
     </div>
   </>)
 }
