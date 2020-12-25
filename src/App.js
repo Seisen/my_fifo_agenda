@@ -6,6 +6,8 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -21,25 +23,33 @@ firebase.initializeApp({
   measurementId: "G-NWXREE2YEL"
 })
 
-
 const auth = firebase.auth();
+
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 
 
+
 function App() {
+
   const [user] = useAuthState(auth);
-
-
+  const agendaRef = firestore.collection('agenda');
+  const query = agendaRef.orderBy('createdAt').limit(4);
+  const [agenda] = useCollectionData(query, { idField: 'id' });
 
   return (
     <div className="App">
       <header>
-        <SignOut></SignOut>
 
+        <SignOut></SignOut>
+        {agenda && agenda.map(ele => <ListAgenda key={ele.id} agenda={ele} />)}
+        <Agendas/>
+        <button onClick={Agendas}> Add a project </button>
       </header>
 
       <section>
+
+
         {user ? <Agenda /> : <SignIn />}
 
 
@@ -70,9 +80,37 @@ function SignOut() {
   )
 }
 
+function Agendas(){
+  const agendaRef = firestore.collection('agenda');
+  const [page, setPage] = useState(null);//if null its on create a new agenda
+  const [nameAgenda, setNameAgenda] = useState('');
 
+  const addAgenda = async (e) => {
+
+    e.preventDefault();
+
+
+    await agendaRef.add({
+      name:nameAgenda,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    setNameAgenda('');
+  }
+  return (<>
+
+
+    <form onSubmit={addAgenda}>
+      <input value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
+      <button type="submit"  disabled={!nameAgenda}>+</button>
+    </form>
+
+
+  </>)
+
+}
 
 function Agenda(){
+
   const dummy = useRef();
   const todoRef = firestore.collection('todo');
   const query = todoRef.orderBy('createdAt').limit(25);
@@ -81,8 +119,6 @@ function Agenda(){
 
   const [formValue, setFormValue] = useState('');
   const [levelValue, setLevelValue] = useState('');
-
-
 
 
   const addObj = async (e) => {
@@ -116,31 +152,73 @@ function Agenda(){
 
         {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
 
-
-
       </main>
   </>
   )
 }
 function ChatMessage(props) {
-  const { text } = props.todo;
-
-
+  const { text, level, id } = props.todo;
 
   const removeObj = async (e) => {
     e.preventDefault();
-    const docId = props.todo.id
-    const todoRef = firestore.collection('todo').doc(docId);
 
-    await todoRef.delete();
+    const todoRef = firestore.collection('todo').doc(id);
+
+    await confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => todoRef.delete()
+        },
+        {
+          label: 'No'
+        }
+      ]
+    });
+
   }
-
 
   return (<>
     <div className='todoElem'>
 
-      <p>{text}</p>
+      <p className={level}>{text}</p>
       <button onClick={removeObj}>-</button>
+    </div>
+  </>)
+}
+
+function ListAgenda(props) {
+  const { name, id } = props.agenda;
+  console.log(name);
+
+  const removeObj = async (e) => {
+    e.preventDefault();
+
+    const agendaRef = firestore.collection('agenda').doc(id);
+
+    await confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => agendaRef.delete()
+        },
+        {
+          label: 'No'
+        }
+      ]
+    });
+
+  }
+
+  return (<>
+    <div className='agendaElem'>
+
+      <p>{name}</p>
+      <button onClick={removeObj}>x</button>
     </div>
   </>)
 }
