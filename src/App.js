@@ -27,31 +27,29 @@ const auth = firebase.auth();
 
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
+var nameA = '_main_';
 
 
 
 function App() {
 
   const [user] = useAuthState(auth);
-  const agendaRef = firestore.collection('agenda');
-  const query = agendaRef.orderBy('createdAt').limit(4);
-  const [agenda] = useCollectionData(query, { idField: 'id' });
+
 
   return (
     <div className="App">
       <header>
 
         <SignOut></SignOut>
-        {agenda && agenda.map(ele => <ListAgenda key={ele.id} agenda={ele} />)}
-        <Agendas/>
-        <button onClick={Agendas}> Add a project </button>
+
+        {user ? <Agendas /> : null}
+
+
       </header>
 
       <section>
 
-
         {user ? <Agenda /> : <SignIn />}
-
 
       </section>
     </div>
@@ -81,9 +79,13 @@ function SignOut() {
 }
 
 function Agendas(){
+
+
   const agendaRef = firestore.collection('agenda');
-  const [page, setPage] = useState(null);//if null its on create a new agenda
+  const query = agendaRef.orderBy('createdAt').limit(4);
+  const [agenda] = useCollectionData(query, { idField: 'id' });
   const [nameAgenda, setNameAgenda] = useState('');
+
 
   const addAgenda = async (e) => {
 
@@ -104,15 +106,16 @@ function Agendas(){
       <button type="submit"  disabled={!nameAgenda}>+</button>
     </form>
 
-
+    {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
   </>)
 
 }
 
 function Agenda(){
 
+
   const dummy = useRef();
-  const todoRef = firestore.collection('todo');
+  const todoRef = firestore.collection(nameA);
   const query = todoRef.orderBy('createdAt').limit(25);
 
   const [todo] = useCollectionData(query, { idField: 'id' });
@@ -142,7 +145,7 @@ function Agenda(){
         <span ref={dummy}></span>
     <form onSubmit={addObj}>
 
-      <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
+      <input id={'formTodo'} value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
       <input type='checkbox'  onChange={(e) => setLevelValue(e.target.value)} />
       <button type="submit" disabled={!formValue}>+</button>
 
@@ -156,6 +159,7 @@ function Agenda(){
   </>
   )
 }
+
 function ChatMessage(props) {
   const { text, level, id } = props.todo;
 
@@ -186,12 +190,13 @@ function ChatMessage(props) {
       <p className={level}>{text}</p>
       <button onClick={removeObj}>-</button>
     </div>
+
   </>)
 }
 
 function ListAgenda(props) {
   const { name, id } = props.agenda;
-  console.log(name);
+  const update = () =>{document.getElementById('formTodo').value = "My value";}
 
   const removeObj = async (e) => {
     e.preventDefault();
@@ -211,16 +216,11 @@ function ListAgenda(props) {
         }
       ]
     });
-
   }
 
-  return (<>
-    <div className='agendaElem'>
 
-      <p>{name}</p>
-      <button onClick={removeObj}>x</button>
-    </div>
-  </>)
+  return (<p onClick={() => {nameA = name; window.location.reload() } } > {name} <button onClick={removeObj}>x</button></p>
+      )
 }
 
 
