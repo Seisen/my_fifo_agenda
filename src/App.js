@@ -11,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import {useEffect} from "react/cjs/react.production.min";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDOlBBKrw6M2_PqvDlDXMJjJqr9OBF99xk",
@@ -22,39 +23,32 @@ firebase.initializeApp({
   appId: "1:402510800265:web:ee875372ec76f565776d58",
   measurementId: "G-NWXREE2YEL"
 })
-
 const auth = firebase.auth();
-
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 var nameA = '_main_';
 
 
 
+
+
+
 function App() {
-
   const [user] = useAuthState(auth);
-
 
   return (
     <div className="App">
       <header>
-
         <SignOut></SignOut>
-
         {user ? <Agendas /> : null}
-
-
       </header>
-
       <section>
-
         {user ? <Agenda /> : <SignIn />}
-
       </section>
     </div>
   );
 }
+
 
 
 
@@ -63,44 +57,43 @@ function SignIn() {
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
+
   }
+
 
   return (
       <>
         <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
       </>
   )
-
 }
+
 function SignOut() {
   return auth.currentUser && (
       <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
 
+
 function Agendas(){
-
-
-  const agendaRef = firestore.collection('agenda');
+  const [user] = useAuthState(auth);
+  const agendaRef = firestore.collection('users').doc(user.uid).collection('agenda');
   const query = agendaRef.orderBy('createdAt').limit(4);
   const [agenda] = useCollectionData(query, { idField: 'id' });
   const [nameAgenda, setNameAgenda] = useState('');
 
 
+
   const addAgenda = async (e) => {
-
     e.preventDefault();
-
-
     await agendaRef.add({
       name:nameAgenda,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
     setNameAgenda('');
   }
-  return (<>
-
-
+  return (
+  <>
     <form onSubmit={addAgenda}>
       <input value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
       <button type="submit"  disabled={!nameAgenda}>+</button>
@@ -108,21 +101,33 @@ function Agendas(){
 
     {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
   </>)
-
 }
 
 function Agenda(){
-
-
   const dummy = useRef();
-  const todoRef = firestore.collection(nameA);
+  const [user] = useAuthState(auth);
+
+  const getCA = () => {firestore.collection('users').doc(user.uid).get().then((doc) => {
+    if (doc.exists)
+    nameA = doc.data()['currentAgenda'];
+  })}
+  getCA();
+
+  const addMain = () => {firestore.collection('users').doc(user.uid).collection('agenda').doc('_main_').get().then((doc) => {
+    if (!doc.exists){
+      const addd = () => {
+        firestore.collection('users').doc(user.uid).collection('agenda').doc('_main_').set({name:'_main_',createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      }
+      addd();
+    }
+  })}
+  addMain()
+
+  const todoRef = firestore.collection('users').doc(user.uid).collection(nameA);
   const query = todoRef.orderBy('createdAt').limit(25);
-
   const [todo] = useCollectionData(query, { idField: 'id' });
-
   const [formValue, setFormValue] = useState('');
   const [levelValue, setLevelValue] = useState('');
-
 
   const addObj = async (e) => {
 
@@ -152,9 +157,7 @@ function Agenda(){
     </form>
 
       <main>
-
         {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
-
       </main>
   </>
   )
@@ -196,7 +199,7 @@ function ChatMessage(props) {
 
 function ListAgenda(props) {
   const { name, id } = props.agenda;
-  const update = () =>{document.getElementById('formTodo').value = "My value";}
+  const [user] = useAuthState(auth);
 
   const removeObj = async (e) => {
     e.preventDefault();
@@ -217,11 +220,16 @@ function ListAgenda(props) {
       ]
     });
   }
+  return (
+    <>
+      <p onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
+        {name}
+       </p>
 
-
-  return (<p onClick={() => {nameA = name; window.location.reload() } } > {name} <button onClick={removeObj}>x</button></p>
+      <button onClick={removeObj}>
+        x
+      </button>
+    </>
       )
 }
-
-
 export default App;
