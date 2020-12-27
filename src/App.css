@@ -1,0 +1,33 @@
+.App{
+    display: flex;
+    width: 70vw;
+    height: 100vh;
+    margin-left: 15vw;
+    flex-direction: column;
+}
+header{
+    top:0px;
+    display: flex;
+    position: sticky;
+    height: 5vh;
+    flex-direction: column;
+    height: fit-content;
+    width: fit-content;
+}
+section{
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+}
+.botHeader{
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: fit-content;
+}
+.topHeader{
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: fit-content;
+}

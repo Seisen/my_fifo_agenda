@@ -11,7 +11,6 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import {useEffect} from "react/cjs/react.production.min";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDOlBBKrw6M2_PqvDlDXMJjJqr9OBF99xk",
@@ -29,18 +28,20 @@ const analytics = firebase.analytics();
 var nameA = '_main_';
 
 
-
-
-
-
 function App() {
   const [user] = useAuthState(auth);
 
   return (
     <div className="App">
       <header>
-        <SignOut></SignOut>
-        {user ? <Agendas /> : null}
+        <div className={'topHeader'}>
+          {user ? <p>{user.displayName}'s Fifo Agenda</p> : null}
+          {user ? <SignOut></SignOut> : null}
+
+        </div>
+
+        {user ? <Agendas className={'botHeader'} /> : null}
+
       </header>
       <section>
         {user ? <Agenda /> : <SignIn />}
@@ -49,9 +50,6 @@ function App() {
   );
 }
 
-
-
-
 function SignIn() {
 
   const signInWithGoogle = () => {
@@ -59,7 +57,6 @@ function SignIn() {
     auth.signInWithPopup(provider);
 
   }
-
 
   return (
       <>
@@ -93,14 +90,15 @@ function Agendas(){
     setNameAgenda('');
   }
   return (
-  <>
+  <div className={'botHeader'}>
+    {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
     <form onSubmit={addAgenda}>
       <input value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
       <button type="submit"  disabled={!nameAgenda}>+</button>
     </form>
 
-    {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
-  </>)
+
+  </div>)
 }
 
 function Agenda(){
@@ -165,11 +163,10 @@ function Agenda(){
 
 function ChatMessage(props) {
   const { text, level, id } = props.todo;
-
+  const [user] = useAuthState(auth);
+  const todoRef = firestore.collection('users').doc(user.uid).collection(nameA).doc(id);
   const removeObj = async (e) => {
     e.preventDefault();
-
-    const todoRef = firestore.collection('todo').doc(id);
 
     await confirmAlert({
       title: 'Confirm to delete',
@@ -200,11 +197,10 @@ function ChatMessage(props) {
 function ListAgenda(props) {
   const { name, id } = props.agenda;
   const [user] = useAuthState(auth);
+  const agendaRef = firestore.collection('users').doc(user.uid).collection('agenda').doc(id);
 
   const removeObj = async (e) => {
     e.preventDefault();
-
-    const agendaRef = firestore.collection('agenda').doc(id);
 
     await confirmAlert({
       title: 'Confirm to delete',
