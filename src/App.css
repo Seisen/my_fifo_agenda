@@ -6,28 +6,75 @@
     flex-direction: column;
 }
 header{
-    top:0px;
+
     display: flex;
-    position: sticky;
-    height: 5vh;
-    flex-direction: column;
     height: fit-content;
-    width: fit-content;
+    flex-direction: column;
+    width: 100%;
 }
 section{
     display: flex;
     height: fit-content;
-    width: fit-content;
+    width: 100%;
+    flex-direction: column;
+    position: relative;
 }
 .botHeader{
     display: flex;
     flex-direction: row;
     height: fit-content;
-    width: fit-content;
+    width: 100%;
+    justify-content: space-between;
 }
+
 .topHeader{
     display: flex;
     flex-direction: row;
     height: fit-content;
+    width: 100%;
+    justify-content: space-between;
+}
+.pHeader{
+    display: flex;
+
+}
+.sHeader{
+    display: flex;
+    
+}
+
+.Agendas{
+    display: flex;
+    flex-direction: row;
+
+}
+.listAgendas{
+    display: flex;
+    justify-content: flex-start;
+}
+.formAgenda{
+    display: flex;
+    justify-content: flex-end;
+}
+.todoElem{
+    display: flex;
+    flex-direction: row;
     width: fit-content;
+    align-self: center;
+}
+main{
+    display: flex;
+    width: fit-content;
+    align-self: center;
+    flex-direction: column;
+}
+.formTasks{
+    display: flex;
+    align-self: center;
+    width: fit-content;
+}
+.tasks{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }

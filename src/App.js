@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
-
+import { FormControl, FormCheck } from 'react-bootstrap';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/analytics';
-
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -35,8 +34,8 @@ function App() {
     <div className="App">
       <header>
         <div className={'topHeader'}>
-          {user ? <p>{user.displayName}'s Fifo Agenda</p> : null}
-          {user ? <SignOut></SignOut> : null}
+          {user ? <p className={'pHeader'}>{user.displayName}'s Fifo Agenda</p> : null}
+          {user ? <SignOut className={'sHeader'}></SignOut> : null}
 
         </div>
 
@@ -91,9 +90,10 @@ function Agendas(){
   }
   return (
   <div className={'botHeader'}>
-    {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
-    <form onSubmit={addAgenda}>
-      <input value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
+    <div className={'listAgendas'}>{agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}</div>
+
+    <form className={FormControl} onSubmit={addAgenda}>
+      <input  className={"form-control"} value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
       <button type="submit"  disabled={!nameAgenda}>+</button>
     </form>
 
@@ -144,12 +144,12 @@ function Agenda(){
     dummy.current.scrollIntoView({ behavior: 'smooth' });
   }
 
-  return (<>
+  return (<div className={'tasks'}>
         <span ref={dummy}></span>
-    <form onSubmit={addObj}>
+    <form className={'formTasks'} onSubmit={addObj}>
 
-      <input id={'formTodo'} value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
-      <input type='checkbox'  onChange={(e) => setLevelValue(e.target.value)} />
+      <input  className={FormControl} id={'formTodo'} value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
+      <input  type='checkbox'  className={FormCheck} onChange={(e) => setLevelValue(e.target.value)} />
       <button type="submit" disabled={!formValue}>+</button>
 
     </form>
@@ -157,7 +157,7 @@ function Agenda(){
       <main>
         {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
       </main>
-  </>
+  </div>
   )
 }
 
@@ -217,15 +217,16 @@ function ListAgenda(props) {
     });
   }
   return (
-    <>
-      <p onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
-        {name}
-       </p>
+    <div className={'Agendas'}>
+
+        <p onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
+          {name}
+         </p>
 
       <button onClick={removeObj}>
         x
       </button>
-    </>
+    </div>
       )
 }
 export default App;
