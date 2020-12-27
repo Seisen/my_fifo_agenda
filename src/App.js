@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import './App.css';
 
-import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Form, InputGroup, FormControl, Dropdown } from 'react-bootstrap';
 
 
 import firebase from 'firebase/app';
@@ -80,6 +80,49 @@ function Agendas(){
   const [agenda] = useCollectionData(query, { idField: 'id' });
   const [nameAgenda, setNameAgenda] = useState('');
 
+  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+      <a
+          href=""
+          ref={ref}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(e);
+          }}
+      >
+        {children}
+        &#x25bc;
+      </a>
+  ));
+
+  const CustomMenu = React.forwardRef(
+      ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+        const [value, setValue] = useState('');
+
+        return (
+            <div
+                ref={ref}
+                style={style}
+                className={className}
+                aria-labelledby={labeledBy}
+            >
+              <FormControl
+                  autoFocus
+                  className="mx-3 my-2 w-auto"
+                  placeholder="Type to filter..."
+                  onChange={(e) => setValue(e.target.value)}
+                  value={value}
+              />
+              <ul>
+                {React.Children.toArray(children).filter(
+                    (child) =>
+                        !value || child.props.agenda.name.toLowerCase().startsWith(value),
+
+                )}
+              </ul>
+            </div>
+        );
+      },
+  );
 
 
   const addAgenda = async (e) => {
@@ -92,7 +135,17 @@ function Agendas(){
   }
   return (
   <div className={'botHeader'}>
-    <div className={'listAgendas'}>{agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}</div>
+
+    <Dropdown>
+      <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+        Custom toggle
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu as={CustomMenu}>
+        {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
+      </Dropdown.Menu>
+    </Dropdown>
+
     <form  onSubmit={addAgenda}>
       <InputGroup>
         <FormControl
@@ -113,6 +166,8 @@ function Agendas(){
 function Agenda(){
   const dummy = useRef();
   const [user] = useAuthState(auth);
+
+
 
   const getCA = () => {firestore.collection('users').doc(user.uid).get().then((doc) => {
     if (doc.exists)
@@ -237,17 +292,15 @@ function ListAgenda(props) {
     });
   }
   return (
-    <div className={'Agendas'}>
-
+      <Dropdown.Item name = {name} className={'Agendas'}>
         <p id='agendaP' onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
           <div id='aaa'>{name}</div>
-         </p>
+        </p>
 
-      <Button variant='primary' onClick={removeObj}>
-        x
-      </Button>
-
-    </div>
+        <Button variant='primary' onClick={removeObj}>
+          x
+        </Button>
+      </Dropdown.Item>
       )
 }
 export default App;
