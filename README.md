@@ -1,3 +1,6 @@
+#Personal agenda following the FIFO rule
+## Done with react / react-bootstrap / firebase
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
