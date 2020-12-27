@@ -4,6 +4,8 @@
     height: 100vh;
     margin-left: 15vw;
     flex-direction: column;
+
+
 }
 header{
 
@@ -11,6 +13,7 @@ header{
     height: fit-content;
     flex-direction: column;
     width: 100%;
+
 }
 section{
     display: flex;
@@ -20,10 +23,12 @@ section{
     position: relative;
 }
 .botHeader{
+    width: 60vw;
+    align-self: center;
     display: flex;
     flex-direction: row;
     height: fit-content;
-    width: 100%;
+
     justify-content: space-between;
 }
 
@@ -36,6 +41,12 @@ section{
 }
 .pHeader{
     display: flex;
+
+}
+#forma{
+    display: flex;
+    width: 60vw;
+    align-self: center;
 
 }
 .sHeader{
@@ -59,13 +70,46 @@ section{
 .todoElem{
     display: flex;
     flex-direction: row;
-    width: fit-content;
+    width: 60vw;
     align-self: center;
+    justify-content: space-between;
+
+
+}
+#todoP{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    width: 60vw;
+    align-self: center;
+    align-items: center;
+
+}
+#ppp{
+    display: flex;
+}
+#agendaP{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+
+}
+#aaa{
+    display: flex;
+}
+.todoB{
+    display: flex;
+    width: fit-content;
+    justify-self: flex-end;
 }
 main{
     display: flex;
-    width: fit-content;
-    align-self: center;
+    width: 100%;
+
     flex-direction: column;
 }
 .formTasks{

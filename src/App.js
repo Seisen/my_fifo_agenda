@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
+
 import './App.css';
-import { FormControl, FormCheck } from 'react-bootstrap';
+
+import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
+
+
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -10,6 +14,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+
 
 firebase.initializeApp({
   apiKey: "AIzaSyDOlBBKrw6M2_PqvDlDXMJjJqr9OBF99xk",
@@ -26,7 +31,6 @@ const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 var nameA = '_main_';
 
-
 function App() {
   const [user] = useAuthState(auth);
 
@@ -36,15 +40,13 @@ function App() {
         <div className={'topHeader'}>
           {user ? <p className={'pHeader'}>{user.displayName}'s Fifo Agenda</p> : null}
           {user ? <SignOut className={'sHeader'}></SignOut> : null}
-
         </div>
 
         {user ? <Agendas className={'botHeader'} /> : null}
-
       </header>
-      <section>
-        {user ? <Agenda /> : <SignIn />}
-      </section>
+        <section>
+          {user ? <Agenda /> : <SignIn />}
+        </section>
     </div>
   );
 }
@@ -59,14 +61,14 @@ function SignIn() {
 
   return (
       <>
-        <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
+        <Button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</Button>
       </>
   )
 }
 
 function SignOut() {
   return auth.currentUser && (
-      <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
+      <Button className="sign-out" onClick={() => auth.signOut()}>Sign Out</Button>
   )
 }
 
@@ -91,12 +93,19 @@ function Agendas(){
   return (
   <div className={'botHeader'}>
     <div className={'listAgendas'}>{agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}</div>
-
-    <form className={FormControl} onSubmit={addAgenda}>
-      <input  className={"form-control"} value={nameAgenda} onChange={(e) => setNameAgenda(e.target.value)} placeholder="Name of the new agenda" />
-      <button type="submit"  disabled={!nameAgenda}>+</button>
+    <form  onSubmit={addAgenda}>
+      <InputGroup>
+        <FormControl
+            className={"form-control"}
+            value={nameAgenda}
+            onChange={(e) => setNameAgenda(e.target.value)}
+            placeholder="Name of the new agenda"
+        />
+        <InputGroup.Append>
+          <Button type="submit"  disabled={!nameAgenda}>+</Button>
+        </InputGroup.Append>
+      </InputGroup>
     </form>
-
 
   </div>)
 }
@@ -146,14 +155,23 @@ function Agenda(){
 
   return (<div className={'tasks'}>
         <span ref={dummy}></span>
-    <form className={'formTasks'} onSubmit={addObj}>
+        <form id='forma' onSubmit={addObj}>
+          <InputGroup>
+            <FormControl
+                className={'formTasks'}
+                onSubmit={addObj}
+                placeholder="add something to the agenda"
+                id={'formTodo'}
+                value={formValue}
+                onChange={(e) => setFormValue(e.target.value)}
 
-      <input  className={FormControl} id={'formTodo'} value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="add something to the agenda" />
-      <input  type='checkbox'  className={FormCheck} onChange={(e) => setLevelValue(e.target.value)} />
-      <button type="submit" disabled={!formValue}>+</button>
-
-    </form>
-
+            />
+            <InputGroup.Append>
+              <InputGroup.Checkbox  onChange={(e) => setLevelValue(e.target.value)}/>
+              <Button variant='primary' type="submit" disabled={!formValue}>+</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </form>
       <main>
         {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
       </main>
@@ -187,8 +205,10 @@ function ChatMessage(props) {
   return (<>
     <div className='todoElem'>
 
-      <p className={level}>{text}</p>
-      <button onClick={removeObj}>-</button>
+      <p id='todoP' className={level}>
+       <div id='ppp'>{text}</div>
+      </p>
+      <Button className='todoB' onClick={removeObj}>-</Button>
     </div>
 
   </>)
@@ -219,13 +239,14 @@ function ListAgenda(props) {
   return (
     <div className={'Agendas'}>
 
-        <p onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
-          {name}
+        <p id='agendaP' onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
+          <div id='aaa'>{name}</div>
          </p>
 
-      <button onClick={removeObj}>
+      <Button variant='primary' onClick={removeObj}>
         x
-      </button>
+      </Button>
+
     </div>
       )
 }
