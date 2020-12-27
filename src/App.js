@@ -138,7 +138,7 @@ function Agendas(){
 
     <Dropdown>
       <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-        Custom toggle
+       Your agendas
       </Dropdown.Toggle>
 
       <Dropdown.Menu as={CustomMenu}>
@@ -152,7 +152,7 @@ function Agendas(){
             className={"form-control"}
             value={nameAgenda}
             onChange={(e) => setNameAgenda(e.target.value)}
-            placeholder="Name of the new agenda"
+            placeholder="Create a new agenda"
         />
         <InputGroup.Append>
           <Button type="submit"  disabled={!nameAgenda}>+</Button>
@@ -215,15 +215,21 @@ function Agenda(){
             <FormControl
                 className={'formTasks'}
                 onSubmit={addObj}
-                placeholder="add something to the agenda"
+                placeholder={"Add a task to "+nameA}
                 id={'formTodo'}
                 value={formValue}
                 onChange={(e) => setFormValue(e.target.value)}
 
             />
+
             <InputGroup.Append>
-              <InputGroup.Checkbox  onChange={(e) => setLevelValue(e.target.value)}/>
-              <Button variant='primary' type="submit" disabled={!formValue}>+</Button>
+
+              <p className="onoff">
+                <input onChange={(e) => setLevelValue(e.target.value)} type="checkbox"  id="checkboxID"/>
+                <label htmlFor="checkboxID"></label>
+              </p>
+
+              <Button variant='primary' type="submit" disabled={!formValue}>ADD</Button>
             </InputGroup.Append>
           </InputGroup>
         </form>
@@ -263,7 +269,7 @@ function ChatMessage(props) {
       <p id='todoP' className={level}>
        <div id='ppp'>{text}</div>
       </p>
-      <Button className='todoB' onClick={removeObj}>-</Button>
+      <Button className='todoB'  variant="outline-danger" size="sm" onClick={removeObj}>x</Button>
     </div>
 
   </>)

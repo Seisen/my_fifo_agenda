@@ -1,8 +1,8 @@
 .App{
     display: flex;
-    width: 70vw;
+    width: 60vw;
     height: 100vh;
-    margin-left: 15vw;
+    margin-left: 20vw;
     flex-direction: column;
 
 
@@ -23,11 +23,12 @@ section{
     position: relative;
 }
 .botHeader{
-    width: 60vw;
+    width: 50vw;
     align-self: center;
     display: flex;
     flex-direction: row;
     height: fit-content;
+    margin-bottom: 3%;
 
     justify-content: space-between;
 }
@@ -37,6 +38,7 @@ section{
     flex-direction: row;
     height: fit-content;
     width: 100%;
+    margin-bottom: 0.5%;
     justify-content: space-between;
 }
 .pHeader{
@@ -45,8 +47,9 @@ section{
 }
 #forma{
     display: flex;
-    width: 60vw;
+    width: 50vw;
     align-self: center;
+    margin-bottom: 2%;
 
 }
 .sHeader{
@@ -67,22 +70,28 @@ section{
 .todoElem{
     display: flex;
     flex-direction: row;
-    width: 60vw;
+    width: 50vw;
     align-self: center;
     justify-content: space-between;
 
 
 }
+p{
+    margin: 0px;
+    padding: 0px;
+}
 #todoP{
+    align-self: center;
     display: flex;
     justify-content: center;
-    height: 100%;
+    height: fit-content;
     text-align: center;
-    width: 60vw;
+    width: 50vw;
     align-self: center;
     align-items: center;
 
 }
+
 #ppp{
     display: flex;
 }
@@ -118,4 +127,111 @@ main{
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+dl, ol, ul {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+.dropdown-menu show{
+    inset: 0px auto auto 0px;
+    margin: 0px;
+    transform: translate(0px, 24px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+
+
+
+
+
+/*checkbox animation credit :
+     https://codepen.io/estrepitos/pen/qGmHc
+ */
+
+.onoff {
+
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: middle;
+    *vertical-align: auto;
+    zoom: 1;
+    *display: inline;
+    position: relative;
+    cursor: pointer;
+    width: 75px;
+    height: 100%;
+    line-height: 30px;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.onoff label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background: #326fa8;
+
+    border-radius: 5px;
+    font-weight: bold;
+    color: #FFF;
+    -webkit-transition: background 0.3s, text-indent 0.3s;
+    -moz-transition: background 0.3s, text-indent 0.3s;
+    -o-transition: background 0.3s, text-indent 0.3s;
+    transition: background 0.3s, text-indent 0.3s;
+    text-indent: 30px;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset;
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4) inset;
+}
+.onoff label:after {
+    content: 'not ⚠';
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    font-size: 12px;
+    color: #591717;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.35);
+    z-index: 1;
+}
+.onoff label:before {
+    content: '';
+    width: 15px;
+    height: 80%;
+    border-radius: 3px;
+    background: #FFF;
+    position: absolute;
+    z-index: 2;
+    top: 3px;
+    left: 3px;
+    display: block;
+    -webkit-transition: left 0.3s;
+    -moz-transition: left 0.3s;
+    -o-transition: left 0.3s;
+    transition: left 0.3s;
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+.onoff input:checked + label {
+    background: #cd3c3c;
+    text-indent: 17px;
+
+}
+.onoff input:checked + label:after {
+    content: 'is ⚠';
+    color: #091707;
+}
+.onoff input:checked + label:before {
+    left: 57px;
 }
