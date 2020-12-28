@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import './App.css';
 
-import { Button, Form, InputGroup, FormControl, Dropdown } from 'react-bootstrap';
+import { Button, Form, InputGroup, FormControl, Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
 import firebase from 'firebase/app';
@@ -35,19 +35,19 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="App">
-      <header>
-        <div className={'topHeader'}>
-          {user ? <p className={'pHeader'}>{user.displayName}'s Fifo Agenda</p> : null}
-          {user ? <SignOut className={'sHeader'}></SignOut> : null}
-        </div>
+      <div className="App">
+        <header>
+          <div className={'topHeader'}>
+            {user ? <p className={'pHeader'}>{user.displayName}'s FIFO Agenda</p> : null}
+            {user ? <SignOut className={'sHeader'}></SignOut> : null}
+          </div>
 
-        {user ? <Agendas className={'botHeader'} /> : null}
-      </header>
+          {user ? <Agendas className={'botHeader'} /> : null}
+        </header>
         <section>
           {user ? <Agenda /> : <SignIn />}
         </section>
-    </div>
+      </div>
   );
 }
 
@@ -68,7 +68,7 @@ function SignIn() {
 
 function SignOut() {
   return auth.currentUser && (
-      <Button className="sign-out" onClick={() => auth.signOut()}>Sign Out</Button>
+      <Button variant="outline-light" className="sign-out" onClick={() => auth.signOut()}>Sign Out</Button>
   )
 }
 
@@ -76,7 +76,7 @@ function SignOut() {
 function Agendas(){
   const [user] = useAuthState(auth);
   const agendaRef = firestore.collection('users').doc(user.uid).collection('agenda');
-  const query = agendaRef.orderBy('createdAt').limit(4);
+  const query = agendaRef.orderBy('createdAt').limit(50);
   const [agenda] = useCollectionData(query, { idField: 'id' });
   const [nameAgenda, setNameAgenda] = useState('');
 
@@ -112,7 +112,7 @@ function Agendas(){
                   onChange={(e) => setValue(e.target.value)}
                   value={value}
               />
-              <ul>
+              <ul >
                 {React.Children.toArray(children).filter(
                     (child) =>
                         !value || child.props.agenda.name.toLowerCase().startsWith(value),
@@ -134,44 +134,45 @@ function Agendas(){
     setNameAgenda('');
   }
   return (
-  <div className={'botHeader'}>
+      <div className={'botHeader'}>
 
-    <Dropdown>
-      <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-       Your agendas
-      </Dropdown.Toggle>
+        <Dropdown>
+          <Dropdown.Toggle drop='left' as={CustomToggle} id="dropdown-custom-components">
+            Your agendas
+          </Dropdown.Toggle>
 
-      <Dropdown.Menu as={CustomMenu}>
-        {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
-      </Dropdown.Menu>
-    </Dropdown>
+          <Dropdown.Menu as={CustomMenu}>
+            {agenda && agenda.map(ele => <ListAgenda  key={ele.id} agenda={ele} />)}
+          </Dropdown.Menu>
+        </Dropdown>
 
-    <form  onSubmit={addAgenda}>
-      <InputGroup>
-        <FormControl
-            className={"form-control"}
-            value={nameAgenda}
-            onChange={(e) => setNameAgenda(e.target.value)}
-            placeholder="Create a new agenda"
-        />
-        <InputGroup.Append>
-          <Button type="submit"  disabled={!nameAgenda}>+</Button>
-        </InputGroup.Append>
-      </InputGroup>
-    </form>
+        <form  onSubmit={addAgenda}>
+          <InputGroup>
+            <FormControl
 
-  </div>)
+                className={"form-control"}
+                value={nameAgenda}
+                onChange={(e) => setNameAgenda(e.target.value)}
+                placeholder="Create a new agenda"
+            />
+            <InputGroup.Append>
+              <Button type="submit"   variant="outline-light"  disabled={!nameAgenda}>+</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </form>
+
+      </div>)
 }
 
 function Agenda(){
-  const dummy = useRef();
+
   const [user] = useAuthState(auth);
 
 
 
   const getCA = () => {firestore.collection('users').doc(user.uid).get().then((doc) => {
     if (doc.exists)
-    nameA = doc.data()['currentAgenda'];
+      nameA = doc.data()['currentAgenda'];
   })}
   getCA();
 
@@ -186,10 +187,12 @@ function Agenda(){
   addMain()
 
   const todoRef = firestore.collection('users').doc(user.uid).collection(nameA);
-  const query = todoRef.orderBy('createdAt').limit(25);
+  const query = todoRef.orderBy('createdAt');
   const [todo] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
-  const [levelValue, setLevelValue] = useState('');
+  const [levelValue, setLevelValue] = useState(false);
+
+
 
   const addObj = async (e) => {
 
@@ -205,11 +208,12 @@ function Agenda(){
     })
 
     setFormValue('');
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
+
   }
 
   return (<div className={'tasks'}>
-        <span ref={dummy}></span>
+
+        <h1>{nameA}</h1>
         <form id='forma' onSubmit={addObj}>
           <InputGroup>
             <FormControl
@@ -225,25 +229,28 @@ function Agenda(){
             <InputGroup.Append>
 
               <p className="onoff">
-                <input onChange={(e) => setLevelValue(e.target.value)} type="checkbox"  id="checkboxID"/>
+                <input onChange={(e) => setLevelValue(!levelValue)} type="checkbox"  id="checkboxID"/>
                 <label htmlFor="checkboxID"></label>
               </p>
 
-              <Button variant='primary' type="submit" disabled={!formValue}>ADD</Button>
+              <Button  variant="outline-light" type="submit" disabled={!formValue}>ADD</Button>
             </InputGroup.Append>
           </InputGroup>
         </form>
-      <main>
-        {todo && todo.map(ele => <ChatMessage key={ele.id} todo={ele} />)}
-      </main>
-  </div>
+        <main>
+          {todo && todo.map(ele => <ChatMessage imp={true} key={ele.id} todo={ele} />)}
+          {todo && todo.map(ele => <ChatMessage imp={false} key={ele.id} todo={ele} />)}
+        </main>
+      </div>
   )
 }
 
 function ChatMessage(props) {
-  const { text, level, id } = props.todo;
+  const { text, level, id, createdAt } = props.todo;
+  const {imp} = props
   const [user] = useAuthState(auth);
   const todoRef = firestore.collection('users').doc(user.uid).collection(nameA).doc(id);
+
   const removeObj = async (e) => {
     e.preventDefault();
 
@@ -262,17 +269,36 @@ function ChatMessage(props) {
     });
 
   }
+  if (level == imp){
+    return (<>
+      <div id={'todoElem'+level}>
+        <div id='datep'>
+          {createdAt ? createdAt.toDate().toDateString() : null}
+        </div>
 
-  return (<>
-    <div className='todoElem'>
+        <p id='todoP'>
+          {level ? <div id='ppp'>⚠ <strong> {text} </strong> ⚠</div> : <div id='ppp'>{text}</div>}
+        </p>
 
-      <p id='todoP' className={level}>
-       <div id='ppp'>{text}</div>
-      </p>
-      <Button className='todoB'  variant="outline-danger" size="sm" onClick={removeObj}>x</Button>
-    </div>
+        <OverlayTrigger
 
-  </>)
+            placement='right'
+            overlay={
+              <Tooltip id={`tooltip`}>
+                click to <strong>delete</strong>.
+              </Tooltip>
+            }
+        >
+          <Button className='todoB'  variant="outline-danger" size="sm" onClick={removeObj}>✗</Button>
+
+        </OverlayTrigger>
+
+      </div>
+
+    </>)
+  }else{
+    return (<></>)
+  }
 }
 
 function ListAgenda(props) {
@@ -299,14 +325,37 @@ function ListAgenda(props) {
   }
   return (
       <Dropdown.Item name = {name} className={'Agendas'}>
-        <p id='agendaP' onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
-          <div id='aaa'>{name}</div>
-        </p>
 
-        <Button variant='primary' onClick={removeObj}>
-          x
-        </Button>
+        <OverlayTrigger
+            key='left'
+            placement='left'
+            overlay={
+              <Tooltip id={`tooltip`}>
+                click to <strong>select</strong>.
+              </Tooltip>
+            }
+        >
+          <p id='agendaP' onClick={() => {firestore.collection('users').doc(user.uid).set({currentAgenda:name}).then(() => {window.location.reload()})} } >
+            <div id='aaa'>{name}</div>
+          </p>
+
+        </OverlayTrigger>
+
+        <OverlayTrigger
+
+            placement='right'
+            overlay={
+              <Tooltip id={`tooltip`}>
+                click to <strong>delete</strong>.
+              </Tooltip>
+            }
+        >
+          <Button  variant="outline-danger" onClick={removeObj}>✗
+          </Button>
+
+        </OverlayTrigger>
+
       </Dropdown.Item>
-      )
+  )
 }
 export default App;
