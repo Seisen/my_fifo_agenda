@@ -216,7 +216,30 @@ div.dropdown-menu.show{
 .dropdown a{
     color: white;
 }
+button.sign-in.btn.btn-outline-light{
+    display: block;
+    position: absolute;
+    top: 50vh;
+    left: 40%;
+    width: 20%;
 
+}
+#h1-signIn{
+    margin-top: 25%;
+    font-size:4rem ;
+}
+
+div.react-confirm-alert-overlay{
+    background-color: rgba(0,0,0,0.6);
+
+}
+div.react-confirm-alert-body{
+    background-color: #161B22;
+}
+div.react-confirm-alert-body button{
+    background: white;
+    color: black;
+}
 input.mx-3.my-2.w-auto.form-control{
     background-color: #181e28;
     color: white;

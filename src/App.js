@@ -61,7 +61,10 @@ function SignIn() {
 
   return (
       <>
-        <Button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</Button>
+          <h1 id='h1-signIn'>
+              Your FIFO agenda
+          </h1>
+        <Button variant="outline-light" className="sign-in" onClick={signInWithGoogle}>Sign in with Google</Button>
       </>
   )
 }
