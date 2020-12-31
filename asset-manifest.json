@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/my_fifo_agenda/static/css/main.1578a118.chunk.css",
+    "main.js": "/my_fifo_agenda/static/js/main.90423306.chunk.js",
+    "main.js.map": "/my_fifo_agenda/static/js/main.90423306.chunk.js.map",
+    "runtime-main.js": "/my_fifo_agenda/static/js/runtime-main.8136c6ac.js",
+    "runtime-main.js.map": "/my_fifo_agenda/static/js/runtime-main.8136c6ac.js.map",
+    "static/css/2.50c71024.chunk.css": "/my_fifo_agenda/static/css/2.50c71024.chunk.css",
+    "static/js/2.11c8c9c7.chunk.js": "/my_fifo_agenda/static/js/2.11c8c9c7.chunk.js",
+    "static/js/2.11c8c9c7.chunk.js.map": "/my_fifo_agenda/static/js/2.11c8c9c7.chunk.js.map",
+    "static/js/3.9ecef830.chunk.js": "/my_fifo_agenda/static/js/3.9ecef830.chunk.js",
+    "static/js/3.9ecef830.chunk.js.map": "/my_fifo_agenda/static/js/3.9ecef830.chunk.js.map",
+    "index.html": "/my_fifo_agenda/index.html",
+    "static/css/2.50c71024.chunk.css.map": "/my_fifo_agenda/static/css/2.50c71024.chunk.css.map",
+    "static/css/main.1578a118.chunk.css.map": "/my_fifo_agenda/static/css/main.1578a118.chunk.css.map",
+    "static/js/2.11c8c9c7.chunk.js.LICENSE.txt": "/my_fifo_agenda/static/js/2.11c8c9c7.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/my_fifo_agenda/static/media/coolvetica.8354e9ab.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8136c6ac.js",
+    "static/css/2.50c71024.chunk.css",
+    "static/js/2.11c8c9c7.chunk.js",
+    "static/css/main.1578a118.chunk.css",
+    "static/js/main.90423306.chunk.js"
+  ]
+}
