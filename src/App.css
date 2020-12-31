@@ -1,10 +1,25 @@
+@font-face {
+    font-family: 'coolvetica';
+    font-style: normal;
+
+    src: url("coolvetica.ttf");
+}
+@font-face {
+    font-family: 'quantify';
+    font-style: normal;
+
+    src: url("Quantify.ttf");
+}
+
+
 
 #root {
     background: linear-gradient(-45deg, #30160e, #350c1c, #081f28, #083228);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-
+    font-family: coolvetica;
 }
+
 
 @keyframes gradient {
     0% {
@@ -37,6 +52,7 @@
 h1{
     text-align: center;
     color: #b5b5b5;
+
 }
 input#formTodo,input.form-control{
     background-color : #161B22 ;
@@ -79,6 +95,8 @@ section{
 }
 .pHeader{
     display: flex;
+    font-family: quantify;
+
 
 }
 #forma{
@@ -225,9 +243,33 @@ button.sign-in.btn.btn-outline-light{
 
 }
 #h1-signIn{
-    margin-top: 25%;
-    font-size:4rem ;
+    margin-top: 24.25%;
+
+    width: 60%;
+    font-family: quantify;
+    border-top: solid 1px white;
+    border-bottom: solid 1px white;
+    height: 6rem;
+    margin-left: 20%;
+    transition: .3s;
+    animation: 4s  alternate infinite move_border1;
 }
+
+#h1-signIn-h1{
+    font-family: quantify;
+    font-size:4rem ;
+    width: 60%;
+    position: absolute;
+    margin-left: 20%;
+    margin-top: 25%;
+
+}
+
+@keyframes move_border1 {
+    from { transform: skewX(-50deg) } to {transform: skewX(50deg) }  }
+
+
+
 
 div.react-confirm-alert-overlay{
     background-color: rgba(0,0,0,0.6);

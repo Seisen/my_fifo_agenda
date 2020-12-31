@@ -4,6 +4,7 @@
     <list default="true" id="c2f4a71b-a394-40b1-803f-c206a25a36df" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
     </list>
@@ -39,6 +40,11 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jochi\fifo_agenda\src" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="npm install react-confirm-alert --save" />
@@ -73,7 +79,7 @@
       <workItem from="1608910387301" duration="11861000" />
       <workItem from="1608985991747" duration="35245000" />
       <workItem from="1609063510742" duration="37534000" />
-      <workItem from="1609430385608" duration="1208000" />
+      <workItem from="1609430385608" duration="3712000" />
     </task>
     <servers />
   </component>
