@@ -1,12 +1,12 @@
-### APP with REACT/BOOTSTRAP/FIREBASE
+# APP with REACT/BOOTSTRAP/FIREBASE
 
 
-#The app is deployed on github thanks to gh-pages
+###The app is deployed on github thanks to gh-pages
 
-#This app has for only purpose to practice
+###This app has for only purpose to practice
 
--CREATE your agenda
+- CREATE your agenda
 
--CREATE task in an agenda
+- CREATE task in an agenda
 
--Follow the fifo rule
+- Follow the fifo rule
